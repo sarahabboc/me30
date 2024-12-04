@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor Control</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        button {
+            width: 200px;
+            height: 60px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Motor Control</h1>
+    <button id="forwardBtn">FORWARD</button>
+    <button id="backwardBtn">BACKWARD</button>
+    <button id="stopBtn">STOP</button>
+
+    <script>
+        // Base URL for the Flask app
+        const baseUrl = "http://10.243.84.17:5000";
+
+        // Function to send GET requests
+        function sendRequest(endpoint) {
+            fetch(`${baseUrl}/${endpoint}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    console.log(data); // Log server response
+                    alert(data); // Show an alert with the response
+                })
+                .catch(error => {
+                    // console.error("Error:", error);
+                    // alert("An error occurred while sending the request.");
+                });
+        }
+
+        // Attach event listeners to buttons
+        document.getElementById("forwardBtn").addEventListener("click", () => sendRequest("cw")); // Corrected for forward
+        document.getElementById("backwardBtn").addEventListener("click", () => sendRequest("CC")); // Corrected for backward
+        document.getElementById("stopBtn").addEventListener("click", () => sendRequest("stop"));
+    </script>
+</body>
+</html>
